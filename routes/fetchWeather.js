@@ -2,7 +2,7 @@ require('dotenv').config();
 
 async function fetchWeather() {
 
-    let apiKey = process.env.openweatherAPI_KEY;
+    const apiKey = process.env.openweatherAPI_KEY;
     let city = 'Galway'
     let country_code = 'IE'
     let lat = 53.2744122
