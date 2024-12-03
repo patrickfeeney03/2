@@ -1,4 +1,3 @@
-
 async function fetchWeather() {
 
     let apiKey = 'KEY';
@@ -13,12 +12,12 @@ async function fetchWeather() {
         const response = await fetch(url);
 
         if (!response.ok) {
-            throw new Error('Network response was not ok');
+            throw new Error('Network response failed');
         }
         const data = await response.json();
         console.log(data);
     } catch (error) {
-        console.error('There was a problem with the fetch operation:', error);
+        console.error('Error occured with the fetch operation:', error);
     }
 }
 
