@@ -2,10 +2,21 @@ var express = require('express');
 const { fetchWeather } = require('./fetchWeather');
 var router = express.Router();
 
-/* GET home page. */
-router.get('/', function (req, res, next) {
-  fetchWeather();
-  res.render('index', { title: 'Express' });
+/* GET Weather Data. */
+router.get('/', async function (req, res, next) {
+  // Extract city and countryCode from query params
+  const { city, countryCode } = req.query
+
+  if (!city || !countryCode) {
+    return res.status(400).json({ error: 'City and countryCode are required' });
+  }
+
+  try {
+    const weatherData = await fetchWeather(city, countryCode); // Pass the city and countryCode to the fetchWeather function
+    res.json(weatherData); // Send the weather data back as a JSON response
+  } catch (error) {
+    res.status(500).json({ error: 'Error fetching weather data' });
+  }
 });
 
 module.exports = router;
