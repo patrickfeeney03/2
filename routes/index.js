@@ -2,28 +2,29 @@ var express = require('express');
 const { fetchWeather } = require('./fetchWeather');
 var router = express.Router();
 
+let Mongoose = require('mongoose').Mongoose;
+let Schema = require('mongoose').Schema;
 
+let oldMong = new Mongoose();
+oldMong.connect('mongodb://127.0.0.1:27017/db');
 
-/* GET Weather Data. */
-router.get('/', async function (req, res, next) {
-  // Extract city and countryCode from query params
-  const { city, countryCode } = req.query
-
-  if (!city || !countryCode) {
-    return res.status(400).json({ error: 'City and countryCode are required' });
+// Initial setup
+let weatherSchema = new Schema({
+  city: {
+    type: Object,
+    required: true
+  },
+  data: {
+    type: Object,
+    required: true
   }
+}, { collection: 'weather' });
 
-  try {
-    const weatherData = await fetchWeather(city, countryCode); // Pass the city and countryCode to the fetchWeather function
-    res.json(weatherData); // Send the weather data back as a JSON response
-  } catch (error) {
-    res.status(500).json({ error: 'Error fetching weather data' });
-  }
-});
+let weatherData = oldMong.model('weather', weatherSchema);
 
 router.get('/all', async function (req, res, next) {
-  const data = await 
-
+  const data = await weatherData.find();
+  res.json(data);
 });
 
 module.exports = router;

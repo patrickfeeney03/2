@@ -60,8 +60,8 @@ app.use(function (err, req, res, next) {
 
 async function fetchInitialWeatherData() {
   try {
-    const fetchedData = await fetchWeather(city, countryCode);
-
+    const fetchedData = await fetchWeather();
+    await weatherData.deleteMany({});
     for (let key in fetchedData) {
       const data = {
         city: key,
